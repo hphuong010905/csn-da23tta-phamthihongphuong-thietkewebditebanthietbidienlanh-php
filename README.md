@@ -12,8 +12,8 @@
 - **Họ và tên**: [Họ tên sinh viên]
 - **MSSV**: [Mã số sinh viên]
 - **Lớp**: DA23TTA
-- **Khoa**: Công nghệ Thông tin và Truyền thông
-- **Trường**: Đại học Cần Thơ
+- **Khoa**: Kỹ thuật và công nghệ
+- **Trường**: Đại học Trà Vinh
 
 **Giảng viên hướng dẫn**: [Tên giảng viên]
 
@@ -228,16 +228,16 @@ https://github.com/hphuong010905/csn-da23tta-thietkewebditebanthietbidienlanh-ph
 
 ## 📄 License
 
-Dự án này được phát triển cho mục đích học tập tại Đại học Cần Thơ.
+Dự án này được phát triển cho mục đích học tập.
 
 ---
 
 ## 🙏 Lời cảm ơn
 
 - Giảng viên hướng dẫn: [Tên giảng viên]
-- Khoa Công nghệ Thông tin và Truyền thông - Đại học Cần Thơ
+- Khoa kỹ thuật và công nghệ
 - Các bạn trong lớp DA23TTA
 
 ---
 
-**© 2025 - Đồ án tốt nghiệp - Đại học Cần Thơ**
+**© 2025 - Đồ án cơ sở ngành**
