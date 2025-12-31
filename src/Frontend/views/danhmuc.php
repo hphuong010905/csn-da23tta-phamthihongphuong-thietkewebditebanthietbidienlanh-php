@@ -1,0 +1,290 @@
+<?php
+require_once 'cauhinhSS.php';
+require_once 'ConnectDB.php';
+
+// 1. LẤY MÃ TỪ URL
+$madm = "";
+$ten_hien_thi = "Danh sách sản phẩm"; // Tiêu đề mặc định
+
+if (isset($_GET['madm']) && !empty($_GET['madm'])) {
+    $madm = $_GET['madm'];
+    
+    // Xử lý tiêu đề thủ công bằng PHP (Không truy vấn CSDL bảng danh mục)
+    // Cách này giúp bạn có tiêu đề đẹp mà không cần JOIN bảng
+    switch ($madm) {
+        case 'ML': $ten_hien_thi = "Máy Lạnh"; break;
+        case 'MG': $ten_hien_thi = "Máy Giặt"; break;
+        case 'TL': $ten_hien_thi = "Tủ Lạnh"; break;
+        default: $ten_hien_thi = "Sản phẩm mã: " . $madm; break;
+    }
+} else {
+    header("Location: index.php"); // Không có mã thì về trang chủ
+    exit();
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $ten_hien_thi; ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .card-img-top { height: 200px; object-fit: contain; padding: 10px; }
+        .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-3px); transition: 0.3s; }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top" 
+        style="z-index: 1020; background-color: rgba(0, 78, 146, 1); height: auto; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;">
+        
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
+                <img src="img/bg-1.png" alt="Logo" style="height: 60px; width: auto;" class="me-2">
+                <span class="fw-bold fs-4" style= "color: white;">Thế giới điện lạnh</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                
+                <!-- Search Bar -->
+                <div class="d-flex mx-auto position-relative mt-3 mt-lg-0" style="width: 100%; max-width: 400px;">
+                    <input class="form-control rounded-pill pe-5" type="text" placeholder="Tìm kiếm trong danh mục..." id="search_text" autocomplete="off">
+                    <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent" type="button">
+                        <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                    </button>
+                    <div id="result_list" class="position-absolute w-100" style="top: 100%; left: 0; z-index: 1050;"></div>
+                </div>
+
+                <ul class="navbar-nav ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+
+                    <?php if (isset($_SESSION['kh_name'])): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle btn bg-white text-dark border shadow-sm px-3 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-circle-user fs-5 text-success me-2"></i> 
+                                Xin chào, <b class="text-primary ms-1"><?php echo $_SESSION['kh_name']; ?></b>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 animate slideIn">
+                                <li><a class="dropdown-item py-2" href="profileUser.php"><i class="fa-solid fa-id-card me-2 text-primary"></i> Thông tin cá nhân</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2 text-danger fw-bold" href="LogoutUser.php"><i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất</a></li>
+                            </ul>
+                        </li>
+
+                    <?php elseif (isset($_SESSION['admin_id'])): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle btn bg-white text-dark border shadow-sm px-3 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-user-shield fs-5 text-danger me-2"></i> 
+                                Xin chào, <b class="text-danger ms-1"><?php echo $_SESSION['admin_id']; ?></b>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 animate slideIn">
+                                <li><a class="dropdown-item py-2 fw-bold" href="QTHT.php"><i class="fa-solid fa-screwdriver-wrench me-2 text-warning"></i> Trang Quản Trị</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2 text-danger fw-bold" href="LoginAD.php"><i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất</a></li>
+                            </ul>
+                        </li>
+
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a href="LoginUser.php" class="btn btn-outline-light rounded-pill px-4 fw-bold shadow-sm">
+                                <i class="fa-regular fa-user fs-5"></i> Đăng nhập
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <li class="nav-item">
+                        <?php
+                        $cart_count = 0;
+                        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+                            $cart_count = array_sum($_SESSION['cart']);
+                        }
+                        ?>
+                        <a href="Giohang.php" class="text-white text-decoration-none position-relative ms-3 hover-opacity" style="font-size: 1.2rem;">
+                            
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            
+                            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem; padding: 0.25em 0.4em;">
+                                <?php echo $cart_count; ?>
+                                <span class="visually-hidden">sản phẩm trong giỏ</span>
+                            </span>
+                        </a>                   
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.php">
+                <i class="fa-solid fa-chevron-left me-2"></i> Về trang chủ
+            </a>
+            <span class="fw-bold text-uppercase fs-5 text-dark"><?php echo $ten_hien_thi; ?></span>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="row g-4">
+            <?php
+            // 2. TRUY VẤN DUY NHẤT BẢNG SAN_PHAM
+            $sql_sp = "SELECT * FROM SAN_PHAM WHERE MADM = '$madm'";
+            $result = $conn->query($sql_sp);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    // Xử lý hình ảnh (nếu có)
+                    $imgSrc = 'img/no-image.png';   
+                    if (!empty($row['HINHANHSP'])) {
+                        $imgSrc = 'data:image/jpeg;base64,' . base64_encode($row['HINHANHSP']);
+                    }
+            ?>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card product-card h-100 border-0 shadow-sm">
+                        <a href="ChitietSP.php?id=<?php echo $row['MASP']; ?>">
+                            <img src="<?php echo $imgSrc; ?>" class="card-img-top" alt="Ảnh sản phẩm">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title mb-2">
+                                <a href="ChitietSP.php?id=<?php echo $row['MASP']; ?>" class="text-decoration-none text-dark fw-bold">
+                                    <?php echo $row['TENSP']; ?>
+                                </a>
+                            </h6>
+                            <div class="mt-auto">
+                                <div class="text-danger fw-bold fs-5 mb-2">
+                                    <?php echo number_format($row['DONGIA'], 0, ',', '.'); ?>₫
+                                </div>
+                                <div class="d-grid">
+                                    <?php if (isset($_SESSION['kh_name']) || isset($_SESSION['kh_id']) || isset($_SESSION['admin_id'])): ?>
+                                        <a href="#" onclick="themVaoGio('<?php echo $row['MASP']; ?>'); return false;" class="btn btn-outline-primary rounded-pill btn-sm fw-bold">
+                                            <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+                                        </a>
+                                    <?php else: ?>
+                                        <button onclick="alert('Vui lòng đăng nhập để mua hàng!'); window.location.href='LoginUser.php';" class="btn btn-outline-primary rounded-pill btn-sm fw-bold">
+                                            <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php 
+                } // Kết thúc vòng lặp
+            } else {
+                // TRƯỜNG HỢP KHÔNG CÓ DỮ LIỆU
+                echo '<div class="col-12 text-center py-5">
+                        <div class="text-muted fs-4">Không tìm thấy sản phẩm nào!</div>
+                        <p>Đang tìm kiếm trong bảng <b>SAN_PHAM</b> với MADM = <b>'.$madm.'</b></p>
+                      </div>';
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- Bắt đầu footer -->
+    <footer style="z-index: 1020; background-color: rgba(0, 78, 146, 1); height: auto; color: white;">
+        <div class="container py-2">
+            <div class="row ">
+                <div class="col-md-5"> <!-- Tổng đài hỗ trợ -->
+                    <div>
+                        <div class="fw-bold mb-1">Tổng đài hỗ trợ</div>
+                        <div>Gọi mua:<span class="fw-bold" style="color: white"> 0393 710 219</span> (8:00 - 21:30)</div>
+                        <div>Khiếu nại:<span class="fw-bold" style="color: white"> 0393 710 219</span> (8:00 - 21:30)</div>
+                        <div>Bảo hành:<span class="fw-bold" style="color: white"> 0393 710 219</span> (8:00 - 21:00)</div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-5">
+                    <div>
+                        <div class="fw-bold mb-1">Về công ty</div> <!-- Về công ty -->
+                        <div class="hover111"><a href="" class="text-decoration-none" style="color: white">Giới thiệu công ty</a></div>
+                    </div>
+                </div>
+
+                
+                <div class="col-md-2">
+                    <div>
+                        <div class="fw-bold mb-1">Liên kết hệ thống</div>
+                        <div class="d-flex gap-3 mt-2">
+                            <a href="" class="text-reset text-decoration-none">
+                                <i class="fa-brands fa-facebook fs-5"></i>
+                            </a>
+                            <a href="" class="text-reset text-decoration-none">
+                                <i class="fa-brands fa-youtube fs-5"></i>
+                            </a>
+                            <a href="" class="text-reset text-decoration-none">
+                                <i class="fa-brands fa-instagram fs-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </footer>
+    <p class="mb-1 text-center">
+        © 2025. Đồ án cơ sở ngành. Thực hiện bởi Phạm Thị Hồng Phương
+    </p>
+
+    <script>
+        function themVaoGio(masp) {
+            let formData = new FormData();
+            formData.append('id', masp);
+
+            fetch('ajax_cart.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('cart-count').innerText = data;
+                alert('Đã thêm sản phẩm vào giỏ hàng thành công!');
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            });
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var madm = "<?php echo $madm; ?>"; 
+
+            $('#search_text').keyup(function(){
+                var txt = $(this).val();
+                if(txt != '')
+                {
+                    $.ajax({
+                        url:"search_product.php",
+                        method:"post",
+                        data:{keyword:txt, madm:madm},
+                        dataType:"text",
+                        success:function(data)
+                        {
+                            $('#result_list').html(data);
+                        }
+                    });
+                }
+                else
+                {
+                    $('#result_list').html('');
+                }
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#search_text, #result_list').length) {
+                    $('#result_list').html('');
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

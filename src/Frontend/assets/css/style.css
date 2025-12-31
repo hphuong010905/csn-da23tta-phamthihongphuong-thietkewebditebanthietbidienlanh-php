@@ -1,0 +1,57 @@
+body{
+    background-color: rgb(244, 242, 242);
+}
+
+
+header{
+    background-color: lightblue;
+    height: auto;
+}
+
+
+.container{
+    max-width: 1200px;
+}
+
+.carousel.slide {
+    min-height: 380px;
+    margin: auto;
+}
+
+.box_camket, .box_thongso, .box_danhmuc{
+    min-height: 250px;
+    padding: 1rem;
+    
+}
+
+.border_dichvu{
+    border: 0.5px solid rgb(0, 119, 255); 
+    background-color: #F1F8FE;
+    
+}
+
+.icon1{
+    color: rgb(54, 173, 54);
+}
+
+.bg_khuyenMai{
+    background-color: rgb(248, 195, 19);
+}
+
+.icon_camKet{
+    color: rgb(1, 136, 255);
+    font-size: 23px;
+    vertical-align: middle;
+    margin-right: 13px;
+}
+
+
+footer{
+    height: auto;
+    background-color: white;
+    
+}
+
+.hover111:hover{
+    color: #396ce8;
+}

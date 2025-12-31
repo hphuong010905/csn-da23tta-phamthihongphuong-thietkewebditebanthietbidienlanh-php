@@ -1,0 +1,40 @@
+/* 1. Card sản phẩm: Sạch sẽ, không bóng xám */
+.product-card {
+    transition: all 0.3s ease-in-out;
+    /* Dùng viền mỏng màu xám rất nhạt thay vì shadow */
+    border: 1px solid #e9ecef; 
+    border-radius: 12px; /* Bo góc tròn trịa */
+    background: #fff;
+    overflow: hidden;
+    /* QUAN TRỌNG: Ép buộc không hiển thị bóng ở trạng thái thường */
+    box-shadow: none !important; 
+}
+
+/* 2. Hiệu ứng khi di chuột (Hover): Mới hiện bóng nổi lên */
+.product-card:hover {
+    transform: translateY(-5px);
+    /* Bóng đổ nhẹ khi hover để tạo điểm nhấn */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+    border-color: #0d6efd; /* Viền chuyển màu xanh chủ đạo khi hover */
+}
+
+/* Các phần CSS khác giữ nguyên như cũ */
+.product-img {
+    height: 200px;
+    object-fit: contain;
+    padding: 20px; /* Tăng padding ảnh một chút cho thoáng */
+    transition: transform 0.5s;
+}
+.product-card:hover .product-img { transform: scale(1.05); }
+
+/* Style cho phần sao và lượt bán */
+.rating-box {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.stars { color: #ffc107; }
+.sold-count { color: #999; font-size: 0.8rem; }
+        

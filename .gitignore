@@ -1,0 +1,81 @@
+# Dependencies & Package Managers
+node_modules/
+vendor/
+bower_components/
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & Config
+.env
+.env.local
+.env.*.local
+config.local.php
+
+# Build & Compiled Files
+dist/
+build/
+*.min.js
+*.min.css
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Backup Files
+*.bak
+*.backup
+*~.docx
+*~.xlsx
+
+# Database
+*.sql.gz
+*.sql.zip
+backup/
+
+# PHP
+composer.phar
+/vendor/
+.phpunit.result.cache
+
+# Session & Cache
+sessions/
+cache/
+
+# Upload Files (nếu quá lớn, không nên commit)
+# uploads/
+# src/Frontend/assets/img/uploads/
+
+# Documentation drafts (không phải final version)
+# thesis/doc/*.tmp
+# thesis/doc/~$*.docx
+
+# Sensitive Data
+.htpasswd
+*.pem
+*.key
+private/
+secrets/
