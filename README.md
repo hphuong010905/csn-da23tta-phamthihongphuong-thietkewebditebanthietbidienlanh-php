@@ -12,7 +12,7 @@
 - **Họ và tên**: [Họ tên sinh viên]
 - **MSSV**: [Mã số sinh viên]
 - **Lớp**: DA23TTA
-- **Khoa**: Công nghệ Thông tin
+- **Khoa**: Kỹ thuật và công nghệ
 - **Trường**: Đại học Trà Vinh
 
 **Giảng viên hướng dẫn**: [Tên giảng viên]
@@ -228,16 +228,28 @@ https://github.com/hphuong010905/csn-da23tta-thietkewebditebanthietbidienlanh-ph
 
 ## 📄 License
 
+<<<<<<< HEAD
 Dự án này được phát triển cho mục đích học tập tại Đại học Trà Vinh.
+=======
+Dự án này được phát triển cho mục đích học tập.
+>>>>>>> 82231b6ba9aefb01f694c54632b0992bae58c003
 
 ---
 
 ## 🙏 Lời cảm ơn
 
 - Giảng viên hướng dẫn: [Tên giảng viên]
+<<<<<<< HEAD
 - Khoa Công nghệ Thông tin - Trường Đại học Trà Vinh
+=======
+- Khoa kỹ thuật và công nghệ
+>>>>>>> 82231b6ba9aefb01f694c54632b0992bae58c003
 - Các bạn trong lớp DA23TTA
 
 ---
 
+<<<<<<< HEAD
 **© 2025 - Đồ án cơ sở ngành - Trường Đại học Trà Vinh**
+=======
+**© 2025 - Đồ án cơ sở ngành**
+>>>>>>> 82231b6ba9aefb01f694c54632b0992bae58c003
