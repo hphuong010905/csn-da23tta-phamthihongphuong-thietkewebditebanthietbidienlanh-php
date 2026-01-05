@@ -24,7 +24,7 @@
 - **Email**: phuongdaudh2023@gmail.com
 - **Phone**: 0393710219
 - **GitHub**: https://github.com/hphuong010905
-- **Repository**: https://github.com/hphuong010905/csn-da23tta-thietkewebditebanthietbidienlanh-php.git
+- **Repository**: https://github.com/hphuong010905/csn-da23tta-thietkewebsitebanthietbidienlanh-php.git
 
 ---
 
@@ -115,7 +115,7 @@ CSN/
 
 1. **Clone repository**:
 ```bash
-git clone https://github.com/hphuong010905/csn-da23tta-thietkewebditebanthietbidienlanh-php.git
+git clone https://github.com/hphuong010905/csn-da23tta-thietkewebsitebanthietbidienlanh-php.git
 cd CSN
 ```
 
@@ -221,7 +221,7 @@ Các tài liệu tham khảo được lưu trong thư mục `thesis/refs/`:
 ## 🐛 Báo lỗi
 
 Nếu phát hiện lỗi, vui lòng tạo issue tại:
-https://github.com/hphuong010905/csn-da23tta-thietkewebditebanthietbidienlanh-php/issues
+https://github.com/hphuong010905/csn-da23tta-thietkewebsitebanthietbidienlanh-php/issues
 
 ---
 
